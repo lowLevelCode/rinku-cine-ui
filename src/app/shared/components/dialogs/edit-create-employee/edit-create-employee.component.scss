@@ -1,0 +1,25 @@
+app-avatar {
+    cursor: pointer;
+    margin-bottom: 18px;
+    ::ng-deep  {
+        .icon-container {
+            width:150px;
+            height:150px;            
+        }
+        .status-circle {
+            display: none;
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    app-avatar {
+        margin-bottom: 10px;
+        ::ng-deep  {
+            .icon-container {
+                width:100px;
+                height:100px;
+            }
+        }
+    }   
+}

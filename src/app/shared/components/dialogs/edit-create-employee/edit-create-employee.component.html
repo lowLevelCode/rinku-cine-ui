@@ -1,0 +1,89 @@
+<div mat-dialog-title>
+  <div fxLayoutAlign="space-between center">
+    <span>{{userData?.title}}</span>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+</div>
+
+<div mat-dialog-content>
+  <div fxLayout="column" class="dialog-container">
+    <form id="form" fxLayout="column" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div fxLayout="row" fxLayout.xs="column-reverse">
+        <div fxLayout="column" fxFlex="50%">          
+
+          <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Nombres</mat-label>
+            <input matInput placeholder="Nombres" formControlName="firstName">
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Apellidos</mat-label>
+            <input matInput placeholder="Apellidos" formControlName="lastName">
+            <mat-icon matSuffix>person</mat-icon>
+          </mat-form-field>
+        </div>
+        <div fxLayoutAlign="center center" fxFlex="auto">
+          <app-avatar matTooltip="Selecciona una imagen" [avatarImg]="imgFile" (click)="fileInput.click()"></app-avatar>          
+          <input #fileInput type="file" hidden accept="image/*" (change)="onUploadImageToBrowser($event)">
+        </div>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="10px" fxLayout.xs="column" fxLayoutGap.xs="-10px">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Telefono</mat-label>
+          <input matInput placeholder="Telefono" formControlName="phone" mask="(000) 000 00 00">
+          <mat-icon matSuffix>phone</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Correo Electronico</mat-label>
+          <input matInput placeholder="Correo" formControlName="email">
+          <mat-icon matSuffix>alternate_email</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="10px" fxLayout.xs="column" fxLayoutGap.xs="-10px">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>CURP</mat-label>
+          <input matInput placeholder="CURP" formControlName="curp" mask="AAAAAAAAAAAAAAAAAA">
+          <mat-icon matSuffix>tag</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>RFC</mat-label>
+          <input matInput placeholder="RFC" formControlName="rfc" mask="AAAAAAAAAAAAA">
+          <mat-icon matSuffix>tag</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="10px" fxLayout.xs="column" fxLayoutGap.xs="-10px">
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Rol</mat-label>
+          <mat-select formControlName="rol">
+            <mat-option *ngFor="let food of foods" [value]="food.value">
+              {{food.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" fxFlex>
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="tipo">
+            <mat-option *ngFor="let food of foods" [value]="food.value">
+              {{food.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+    </form>
+  </div>
+</div>
+
+<mat-dialog-actions align="end">  
+  <button mat-raised-button color="primary" form="form" cdkFocusInitial>Guardar</button>
+</mat-dialog-actions>
