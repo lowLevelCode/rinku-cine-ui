@@ -66,7 +66,7 @@ export class EmployeesComponent implements OnInit {
   addNewEmployee() {
     this._dialog.open(EditCreateEmployeeComponent,{
       width:"55%",
-      height:"90%",
+      height:"95%",
       data:<EditCreateDialogData>{
         title:"Nuevo Empleado"
       }

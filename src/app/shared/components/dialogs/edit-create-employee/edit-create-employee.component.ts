@@ -3,13 +3,17 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { finalize, map, tap } from 'rxjs/operators';
 import { EditCreateDialogData } from 'src/app/interfaces/edit-create-dialog-data';
+import { Employee } from 'src/app/models/employee';
 import { EmployeeRol } from 'src/app/models/employee-rol';
 import { EmployeeType } from 'src/app/models/employee-type';
 import { EmployeeRolService } from 'src/app/services/employee-rol.service';
 import { EmployeeTypeService } from 'src/app/services/employee-type.service';
+import { EmployeesService } from 'src/app/services/employees.service';
 import { ResponsiveService } from 'src/app/services/responsive.service';
+import { NgxSpinnerService } from "ngx-spinner";
+import { PopupDialogsService } from 'src/app/services/popup.dialogs.service';
 
 @Component({
   selector: 'app-edit-create-employee',
@@ -36,14 +40,18 @@ export class EditCreateEmployeeComponent {
     private readonly _fb:FormBuilder,
     private readonly _responsiveService:ResponsiveService,
     private readonly _employeeRolService:EmployeeRolService,
-    private readonly _employeeTypeService:EmployeeTypeService,) {}
+    private readonly _employeeTypeService:EmployeeTypeService,
+    private readonly _employeesService:EmployeesService,
+    private readonly _spinner: NgxSpinnerService,
+    private readonly _popupService:PopupDialogsService) {}
 
-  ngOnInit():void {
+  ngOnInit():void {    
     const employee = this.userData.employee;
     this.dialogRef.disableClose = true;
     this.form = this._fb.group({      
       firstName: new FormControl(employee?.nombre, Validators.required),
       lastName: new FormControl(employee?.apellidos, Validators.required),
+      birthdate: new FormControl({value:null,disabled:true}, Validators.required),
       phone: new FormControl(employee?.telefono, Validators.required),
       email: new FormControl(employee?.email, Validators.compose([Validators.required, Validators.email])),
       curp: new FormControl(employee?.curp, Validators.required),
@@ -61,13 +69,34 @@ export class EditCreateEmployeeComponent {
     this.employeesType$ = this._employeeTypeService.getAllTypes().pipe(map(result => result))
   }
 
-  onSubmit() {     
-    if(this.form.invalid){
-      console.error("formulario invalido");
+  onSubmit() {    
+    if(this.form.invalid){      
+      this._popupService.topEndError("Formulario invalido");
       return;
     }
-    const isDirty = !this.form.pristine; // true si el form no se le ha modificado nada.    
-    this.dialogRef.close();
+
+    const isDirty = !this.form.pristine; // true si el form no se le ha modificado nada.
+
+    const employee:Partial<Employee> = {
+      nombre: this.form.get("firstName")?.value,
+      apellidos: this.form.get("lastName")?.value,
+      fechaNacimiento: this.form.get("birthdate")?.value,
+      telefono: this.form.get("phone")?.value,
+      email: this.form.get("email")?.value,
+      curp: this.form.get("curp")?.value,
+      rfc: this.form.get("rfc")?.value,
+      idEmployeeRol: this.form.get("rol")?.value,
+      idEmployeeType: this.form.get("rol")?.value
+    };
+    
+    this._spinner.show();
+    this._employeesService.create(employee).pipe(      
+      finalize(()=>{
+        this.dialogRef.close();
+        this._spinner.hide();
+      })
+    ).subscribe();
+
   }
 
   onUploadImageToBrowser(e:any) {

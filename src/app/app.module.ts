@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskModule, IConfig } from 'ngx-mask'
 import { NgFallimgModule } from 'ng-fallimg';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -28,6 +29,7 @@ const imgs = {
     HttpClientModule,
     NgxMaskModule.forRoot(maskConfig),
     NgFallimgModule.forRoot(imgs),
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

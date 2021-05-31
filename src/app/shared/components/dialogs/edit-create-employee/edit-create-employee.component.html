@@ -25,6 +25,14 @@
             <input matInput placeholder="Apellidos" formControlName="lastName">
             <mat-icon matSuffix>person</mat-icon>
           </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex>
+            <mat-label>Fecha Nacimiento</mat-label>
+            <input matInput [matDatepicker]="dp3" formControlName="birthdate">
+            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+            <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+          </mat-form-field>
+
         </div>
         <div fxLayoutAlign="center center" fxFlex="auto">
           <app-avatar matTooltip="Selecciona una imagen" [avatarImg]="imgFile" (click)="fileInput.click()"></app-avatar>          

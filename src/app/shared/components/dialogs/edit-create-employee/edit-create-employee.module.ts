@@ -14,6 +14,9 @@ import { NgxMaskModule } from 'ngx-mask'
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EmployeeRolService } from 'src/app/services/employee-rol.service';
 import { EmployeeTypeService } from 'src/app/services/employee-type.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { NgxSpinnerModule } from "ngx-spinner";
 
 @NgModule({
   declarations: [
@@ -33,7 +36,10 @@ import { EmployeeTypeService } from 'src/app/services/employee-type.service';
     AvatarModule,
     MatSelectModule,
     NgxMaskModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,    
+    NgxSpinnerModule
   ],
   exports:[EditCreateEmployeeComponent],
   providers:[

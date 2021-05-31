@@ -12,4 +12,8 @@ export class EmployeesService {
     getEmployees(): Observable<Employee[]> {
         return this.httpClient.get<Employee[]>(`${this.url}/employees`);
     }
+
+    create(employee:Partial<Employee>): Observable<Partial<Employee>> {
+        return this.httpClient.post<Partial<Employee>>(`${this.url}/employees`,employee);
+    }
 }
