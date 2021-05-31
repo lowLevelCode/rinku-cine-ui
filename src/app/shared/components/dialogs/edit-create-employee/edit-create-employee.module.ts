@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgxMaskModule } from 'ngx-mask'
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { EmployeeRolService } from 'src/app/services/employee-rol.service';
+import { EmployeeTypeService } from 'src/app/services/employee-type.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,9 @@ import { EmployeeRolService } from 'src/app/services/employee-rol.service';
     MatTooltipModule
   ],
   exports:[EditCreateEmployeeComponent],
-  providers:[EmployeeRolService]
+  providers:[
+    EmployeeRolService,
+    EmployeeTypeService,
+  ]
 })
 export class EditCreateEmployeeModule { }

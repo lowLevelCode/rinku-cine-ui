@@ -73,8 +73,8 @@
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Tipo</mat-label>
           <mat-select formControlName="tipo">
-            <mat-option *ngFor="let food of foods" [value]="food.value">
-              {{food.viewValue}}
+            <mat-option *ngFor="let employeeType of employeesType$ | async" [value]="employeeType.id">
+              {{employeeType.name}}
             </mat-option>
           </mat-select>
         </mat-form-field>

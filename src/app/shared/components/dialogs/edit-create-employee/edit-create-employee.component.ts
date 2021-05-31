@@ -6,7 +6,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EditCreateDialogData } from 'src/app/interfaces/edit-create-dialog-data';
 import { EmployeeRol } from 'src/app/models/employee-rol';
+import { EmployeeType } from 'src/app/models/employee-type';
 import { EmployeeRolService } from 'src/app/services/employee-rol.service';
+import { EmployeeTypeService } from 'src/app/services/employee-type.service';
 import { ResponsiveService } from 'src/app/services/responsive.service';
 
 @Component({
@@ -26,13 +28,15 @@ export class EditCreateEmployeeComponent {
   form!:FormGroup;
   imgFile!:string;
   employeesRol$!:Observable<EmployeeRol[]>;
+  employeesType$!:Observable<EmployeeType[]>;
 
   constructor(
     public dialogRef: MatDialogRef<EditCreateEmployeeComponent>,
     @Inject(MAT_DIALOG_DATA) public userData: EditCreateDialogData,
     private readonly _fb:FormBuilder,
     private readonly _responsiveService:ResponsiveService,
-    private readonly _employeeRolService:EmployeeRolService) {}
+    private readonly _employeeRolService:EmployeeRolService,
+    private readonly _employeeTypeService:EmployeeTypeService,) {}
 
   ngOnInit():void {
     const employee = this.userData.employee;
@@ -54,6 +58,7 @@ export class EditCreateEmployeeComponent {
     });  
 
     this.employeesRol$ = this._employeeRolService.getAllRols().pipe(map(result => result))
+    this.employeesType$ = this._employeeTypeService.getAllTypes().pipe(map(result => result))
   }
 
   onSubmit() {     
