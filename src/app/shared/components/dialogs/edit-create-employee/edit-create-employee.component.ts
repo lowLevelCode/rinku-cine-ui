@@ -2,7 +2,11 @@ import { BreakpointState, Breakpoints } from '@angular/cdk/layout';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { EditCreateDialogData } from 'src/app/interfaces/edit-create-dialog-data';
+import { EmployeeRol } from 'src/app/models/employee-rol';
+import { EmployeeRolService } from 'src/app/services/employee-rol.service';
 import { ResponsiveService } from 'src/app/services/responsive.service';
 
 @Component({
@@ -21,12 +25,14 @@ export class EditCreateEmployeeComponent {
 
   form!:FormGroup;
   imgFile!:string;
+  employeesRol$!:Observable<EmployeeRol[]>;
 
   constructor(
     public dialogRef: MatDialogRef<EditCreateEmployeeComponent>,
     @Inject(MAT_DIALOG_DATA) public userData: EditCreateDialogData,
     private readonly _fb:FormBuilder,
-    private readonly _responsiveService:ResponsiveService) {}
+    private readonly _responsiveService:ResponsiveService,
+    private readonly _employeeRolService:EmployeeRolService) {}
 
   ngOnInit():void {
     const employee = this.userData.employee;
@@ -46,6 +52,8 @@ export class EditCreateEmployeeComponent {
       if(state.breakpoints[Breakpoints.XSmall] || state.breakpoints[Breakpoints.Small])
         this.dialogRef.updateSize("90%");
     });  
+
+    this.employeesRol$ = this._employeeRolService.getAllRols().pipe(map(result => result))
   }
 
   onSubmit() {     

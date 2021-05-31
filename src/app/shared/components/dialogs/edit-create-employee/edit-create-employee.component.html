@@ -64,8 +64,8 @@
         <mat-form-field appearance="outline" fxFlex>
           <mat-label>Rol</mat-label>
           <mat-select formControlName="rol">
-            <mat-option *ngFor="let food of foods" [value]="food.value">
-              {{food.viewValue}}
+            <mat-option *ngFor="let employeeRol of employeesRol$ | async" [value]="employeeRol.id">
+              {{employeeRol.name}}
             </mat-option>
           </mat-select>
         </mat-form-field>
