@@ -9,8 +9,8 @@ export class EmployeesService {
     url:string = environment.apiEndPoint;
     constructor(private httpClient: HttpClient) { }
     
-    getEmployees(): Observable<Employee[]> {
-        return this.httpClient.get<Employee[]>(`${this.url}/employees`);
+    getEmployees(): Observable<Partial<Employee>[]> {
+        return this.httpClient.get<Partial<Employee>[]>(`${this.url}/employees`);
     }
 
     create(employee:Partial<Employee>): Observable<Partial<Employee>> {

@@ -14,6 +14,7 @@ import { EmployeesService } from 'src/app/services/employees.service';
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { EditCreateEmployeeModule } from 'src/app/shared/components/dialogs/edit-create-employee/edit-create-employee.module';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { EditCreateEmployeeModule } from 'src/app/shared/components/dialogs/edit
     FormsModule,
     MatButtonModule,
     MatIconModule,
-    EditCreateEmployeeModule
+    EditCreateEmployeeModule,
+    MatChipsModule
   ],
   providers:[EmployeesService]
 })
