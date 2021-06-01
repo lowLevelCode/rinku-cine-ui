@@ -1,15 +1,19 @@
-<app-header-close-dialog title="Captura de movimientos">
+<app-header-close-dialog title="Captura de Movimientos">
 </app-header-close-dialog>
 <div mat-dialog-content>
   <form>
     <div fxLayout="row" fxLayoutGap="10px">
       <div fxFlex="50%">
         <mat-form-field appearance="outline" fxFlex>
-          <mat-label>Numero o Nombres</mat-label>
+          <mat-label>Numero o Nombre de Empleado</mat-label>
           <input matInput [formControl]="myControl" [matAutocomplete]="auto">
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-              {{option}}
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">                
+                <div fxLayout="row" fxLayoutGap="10px">
+                    <app-avatar-with-text title="hola"></app-avatar-with-text> 
+                    <span>|</span>
+                    <small>hola</small> 
+                </div>
             </mat-option>
           </mat-autocomplete>
           <mat-icon matSuffix>search</mat-icon>
@@ -50,7 +54,7 @@
 
       <div fxLayoutAlign="space-between center" fxFlex="auto">
         <mat-form-field appearance="outline">
-          <mat-label>Cantidad de Capturas</mat-label>
+          <mat-label>Cantidad de Entregas</mat-label>
           <input matInput>
           <mat-icon matSuffix>number</mat-icon>
         </mat-form-field>
@@ -60,7 +64,9 @@
     </div>
 
     <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom: 10px;">
-      <span>Select Captura: 39f391e2-c268-11eb-8529-0242ac130003</span>
+      <div>
+        <span class="primary-text">Select Captura: </span> 39f391e2
+      </div>
       <mat-chip-list>
         <mat-chip fxLayoutGap="20px" (click)="onAgregarCaptura()">
           <mat-icon>add</mat-icon>
