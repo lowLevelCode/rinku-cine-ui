@@ -15,6 +15,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { EditCreateEmployeeModule } from 'src/app/shared/components/dialogs/edit-create-employee/edit-create-employee.module';
 import { MatChipsModule } from '@angular/material/chips';
+import { CapturaMovimientosModule } from 'src/app/shared/components/dialogs/captura-movimientos/captura-movimientos.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatButtonModule,
     MatIconModule,
     EditCreateEmployeeModule,
-    MatChipsModule
+    MatChipsModule,
+    CapturaMovimientosModule
   ],
   providers:[EmployeesService]
 })

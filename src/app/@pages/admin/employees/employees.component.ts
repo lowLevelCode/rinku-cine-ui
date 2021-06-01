@@ -6,6 +6,7 @@ import { debounceTime, map } from 'rxjs/operators';
 import { EditCreateDialogData } from 'src/app/interfaces/edit-create-dialog-data';
 import { Employee } from 'src/app/models/employee';
 import { EmployeesService } from 'src/app/services/employees.service';
+import { CapturaMovimientosComponent } from 'src/app/shared/components/dialogs/captura-movimientos/captura-movimientos.component';
 import { EditCreateEmployeeComponent } from 'src/app/shared/components/dialogs/edit-create-employee/edit-create-employee.component';
 
 @Component({
@@ -66,6 +67,12 @@ export class EmployeesComponent implements OnInit {
   }
 
   onMovimientos(){
-    alert("on movimientos");
+    this._dialog.open(CapturaMovimientosComponent,{
+      width:"55%",
+      height:"95%",
+      data:<EditCreateDialogData>{
+        title:"Nuevo Empleado"
+      }
+    });
   }
 }
