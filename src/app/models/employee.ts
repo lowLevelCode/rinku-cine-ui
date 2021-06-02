@@ -1,3 +1,6 @@
+import { EmployeeRol } from "./employee-rol";
+import { EmployeeType } from "./employee-type";
+
 export interface Employee {
     id?:number;
     nombre: string;
@@ -11,14 +14,4 @@ export interface Employee {
     idEmployeeType:number;
     employeeRol:EmployeeRol;
     employeeType:EmployeeType;
-}
-
-export interface EmployeeRol {
-    id:number;
-    nombre:string;
-}
-
-export interface EmployeeType {
-    id:number;
-    nombre:string;
 }

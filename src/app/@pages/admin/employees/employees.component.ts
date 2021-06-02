@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { debounceTime, map } from 'rxjs/operators';
 import { EditCreateDialogData } from 'src/app/interfaces/edit-create-dialog-data';
+import { Pagination } from 'src/app/interfaces/pagination';
 import { Employee } from 'src/app/models/employee';
 import { EmployeesService } from 'src/app/services/employees.service';
 import { CapturaMovimientosComponent } from 'src/app/shared/components/dialogs/captura-movimientos/captura-movimientos.component';
@@ -18,6 +19,7 @@ export class EmployeesComponent implements OnInit {
 
   filter:FormControl = new FormControl();
   employees!:Employee[];
+  paginationData!:Pagination<Partial<Employee>[]>;
 
   displayedColumns: string[] = ['empleado','rol','tipo', 'actions'];
   data!:MatTableDataSource<any>;
@@ -38,7 +40,8 @@ export class EmployeesComponent implements OnInit {
   }
 
   private _getAndSetEmployees(keyword:string = ""){
-    this._employeesService.getEmployees().subscribe((employees:Partial<Employee>[]) => {
+    this._employeesService.getEmployees().subscribe((pagination:Pagination<Partial<Employee>[]>) => {
+      const employees = pagination.items;      
       this.data = new MatTableDataSource(employees);
     });
   }
