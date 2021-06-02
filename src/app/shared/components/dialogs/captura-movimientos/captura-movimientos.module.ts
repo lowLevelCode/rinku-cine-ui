@@ -21,6 +21,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AvatarWithTextModule } from '../../avatar-with-text/avatar-with-text.module';
 import { NgxMaskModule } from 'ngx-mask';
 import { MatAutocompleteModule } from '@angular/material/autocomplete'
+import { EmployeesService } from 'src/app/services/employees.service';
 
 
 @NgModule({
@@ -50,6 +51,10 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete'
     MatAutocompleteModule
   ],
   exports: [CapturaMovimientosComponent],
-  providers:[EmployeeRolService, EmployeeTypeService]
+  providers:[
+    EmployeeRolService, 
+    EmployeeTypeService,
+    EmployeesService
+  ]
 })
 export class CapturaMovimientosModule { }

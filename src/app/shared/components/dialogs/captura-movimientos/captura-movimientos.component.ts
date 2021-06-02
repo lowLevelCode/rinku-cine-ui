@@ -1,12 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Pagination } from 'src/app/interfaces/pagination';
+import { Employee } from 'src/app/models/employee';
 import { EmployeeRol } from 'src/app/models/employee-rol';
 import { EmployeeType } from 'src/app/models/employee-type';
 import { EmployeeRolService } from 'src/app/services/employee-rol.service';
 import { EmployeeTypeService } from 'src/app/services/employee-type.service';
+import { EmployeesService } from 'src/app/services/employees.service';
 
 
 export interface DialogData {
@@ -44,34 +47,67 @@ export class CapturaMovimientosComponent implements OnInit {
 
   employeesRol$!:Observable<EmployeeRol[]>;
   employeesType$!:Observable<EmployeeType[]>;
+  employees$!:Observable<Partial<Employee>[]>;
 
   myControl = new FormControl();
-  options: string[] = ['One',];
-  filteredOptions!: Observable<string[]>;
+  
+  form!:FormGroup;
   
   constructor(
+    private readonly _fb:FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private readonly _employeeRolService:EmployeeRolService,
-    private readonly _employeeTypeService:EmployeeTypeService,) {}
+    private readonly _employeeTypeService:EmployeeTypeService,
+    private readonly _employee:EmployeesService,) {}
 
   ngOnInit(): void {
     this.employeesRol$ = this._employeeRolService.getAllRols().pipe(map(result => result));
     this.employeesType$ = this._employeeTypeService.getAllTypes().pipe(map(result => result));
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
+    this.myControl.valueChanges.pipe(startWith('')).subscribe(value => {
+      this._filter(value);
+    });
+
+    this.form = this._fb.group({
+      rol:[''],
+      tipo:[''],
+      fechaMovimiento:['', Validators.required],
+      cantidadEntregas:['',Validators.required],
+      cubrioTurno:[''],
+    });
 
   }
 
-  onAgregarCaptura(){
+  private _filter(value: string) {    
+    this.employees$ =  this._employee.getEmployees()
+    .pipe(map((result:Pagination<Partial<Employee>[]>) => result.items));
+  }
+
+  /** Funcion para darle displayWith al autocomplete */
+  getOptionText(employee:Employee) {
+    return employee?.nombre; 
+  }
+
+  onAgregarCaptura() {
     alert("agregar captura");
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
+  onOptionSelected(event:any) {
+    const employee:Employee = event?.option?.value;
 
-    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+    const idEmployeeType = employee?.employeeType?.id;
+    const idEmployeeRol = employee?.employeeRol?.id;
+    
+    // employeeRol:EmployeeRol;
+    // employeeType:EmployeeType;
+
+  }
+
+  onSubmit() {
+    alert("ubmi");
+  }
+
+  getCapturas(id:number) {
+    
   }
 }
