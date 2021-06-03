@@ -11,9 +11,17 @@
 <div mat-dialog-content>
   <div fxLayout="column" class="dialog-container">
     <form id="form" fxLayout="column" [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div fxLayout="row" fxLayout.xs="column-reverse">
-        <div fxLayout="column" fxFlex="50%">          
+      <div fxLayout="row" fxLayout.xs="column">
+        <div fxFlex="50%" fxLayoutAlign="center start">
+          <div fxLayout="column" fxLayoutAlign="center center">
+            <app-avatar matTooltip="Selecciona una imagen" (click)="fileInput.click()"></app-avatar>
+            <!-- <span class="primary-text">asd</span>
+            <span class="secondary-text">id:asd</span> -->
+            <input #fileInput type="file" hidden accept="image/*" (change)="onUploadImageToBrowser($event)">
+          </div>
+        </div>
 
+        <div fxLayout="column" fxFlex="50%">
           <mat-form-field appearance="outline" fxFlex>
             <mat-label>Nombres</mat-label>
             <input matInput placeholder="Nombres" formControlName="firstName">
@@ -25,18 +33,6 @@
             <input matInput placeholder="Apellidos" formControlName="lastName">
             <mat-icon matSuffix>person</mat-icon>
           </mat-form-field>
-
-          <mat-form-field appearance="outline" fxFlex>
-            <mat-label>Fecha Nacimiento</mat-label>
-            <input matInput [matDatepicker]="dp3" formControlName="birthdate">
-            <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-            <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-          </mat-form-field>
-
-        </div>
-        <div fxLayoutAlign="center center" fxFlex="auto">
-          <app-avatar matTooltip="Selecciona una imagen" [avatarImg]="imgFile" (click)="fileInput.click()"></app-avatar>          
-          <input #fileInput type="file" hidden accept="image/*" (change)="onUploadImageToBrowser($event)">
         </div>
       </div>
 
