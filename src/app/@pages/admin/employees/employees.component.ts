@@ -42,7 +42,7 @@ export class EmployeesComponent implements OnInit {
   private _getAndSetEmployees(keyword:string = ""){
     this._employeesService.getEmployees().subscribe((pagination:Pagination<Partial<Employee>[]>) => {
       const employees = pagination.items;      
-      this.data = new MatTableDataSource(employees);
+      this.data = new MatTableDataSource(employees);      
     });
   }
 
@@ -69,13 +69,11 @@ export class EmployeesComponent implements OnInit {
     alert("edit employee "+id);
   }
 
-  onMovimientos(){
+  onMovimientos(employee:Employee){
     this._dialog.open(CapturaMovimientosComponent,{
       width:"55%",
       height:"95%",
-      data:<EditCreateDialogData>{
-        title:"Nuevo Empleado"
-      }
+      data:employee
     });
   }
 }

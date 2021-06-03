@@ -2,57 +2,45 @@
 </app-header-close-dialog>
 <div mat-dialog-content>
   <form #formulario [formGroup]="form" (ngSubmit)="onSubmit()" id="form">
-    <div fxLayout="row" fxLayoutGap="10px">
-      <div fxFlex="50%">
-        <mat-form-field appearance="outline" fxFlex>
-          <mat-label>Numero o Nombre de Empleado</mat-label>
-          <input matInput [formControl]="myControl" [matAutocomplete]="auto">
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="getOptionText" (optionSelected)="onOptionSelected($event)">
-            <mat-option *ngFor="let employee of employees$ | async" [value]="employee">                
-                <div fxLayout="row" fxLayoutGap="10px">
-                    <app-avatar-with-text [title]="employee?.nombre || ''"></app-avatar-with-text> 
-                    <span>|</span>
-                    <small>Id:{{employee?.id}}</small> 
-                </div>
-            </mat-option>
-          </mat-autocomplete>
-          <mat-icon matSuffix>search</mat-icon>
+    <div fxLayout="row">
+      <div fxFlex="50%" fxLayoutAlign="center start">
+        <div fxLayout="column" fxLayoutAlign="center center">
+          <app-avatar></app-avatar>
+          <span class="primary-text">{{employee?.nombre}}</span>
+          <span class="secondary-text">id:{{employee?.id}}</span>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxFlex="50%">
+        <mat-form-field appearance="outline" fxFlex="50%">
+          <mat-label>Rol</mat-label>
+          <input matInput readonly [value]="employee.employeeRol?.name">
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline" fxFlex="50%">
+          <mat-label>Tipo</mat-label>
+          <input matInput readonly [value]="employee.employeeType?.name">        
         </mat-form-field>
       </div>
-      <!-- TODO: Se implementará en otra version
-        <div fxFlex="auto">
-        <app-avatar-with-text title="hola" subtitle="hola"></app-avatar-with-text>
-      </div> -->
-    </div>
-
-    <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between center">
-      <mat-form-field appearance="outline" fxFlex="50%">
-        <mat-label>Rol</mat-label>
-        <input matInput readonly formControlName="rol">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" fxFlex="50%">
-        <mat-label>Tipo</mat-label>
-        <input matInput readonly formControlName="tipo">        
-      </mat-form-field>
     </div>
 
     <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
-      <mat-form-field appearance="outline" fxFlex="50%">
-        <mat-label>Fecha Nacimiento</mat-label>
-        <input matInput [matDatepicker]="dp3" formControlName="fechaMovimiento">
+      <mat-form-field appearance="outline" fxFlex="49%">
+        <mat-label>Fecha Movimiento</mat-label>
+        <input matInput [matDatepicker]="dp3" readonly
+        formControlName="fechaMovimiento" datePickerFormat="YYYY-MM-DD">
         <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
         <mat-datepicker #dp3 disabled="false"></mat-datepicker>
       </mat-form-field>
 
-      <div fxLayoutAlign="space-between center" fxFlex="auto">
+      <div fxLayoutAlign="space-between center" fxFlex="50%">
         <mat-form-field appearance="outline">
           <mat-label>Cantidad de Entregas</mat-label>
           <input matInput formControlName="cantidadEntregas">
           <mat-icon matSuffix>number</mat-icon>
         </mat-form-field>
 
-        <mat-checkbox labelPosition="before" color="primary" formControlName="cubrioTurno">
+        <mat-checkbox labelPosition="before" color="primary" formControlName="cubrioTurno" *ngIf="isAuxiliar">
           Cubrió Turno
         </mat-checkbox>
       </div>
@@ -72,30 +60,29 @@
 
     <div class="movimientos-table">
 
-      <div fxLayout="row" fxLayoutAlign="center center" *ngIf="false">
+      <div fxLayout="row" fxLayoutAlign="center center" *ngIf="!hayMovimientos">
         <h1>Sin movimientos aún</h1>
       </div>
 
-      <table mat-table [dataSource]="dataSource" fxFlex *ngIf="true"> 
-
-        <ng-container matColumnDef="position">
+      <table mat-table [dataSource]="dataSource" fxFlex *ngIf="hayMovimientos">         
+        <ng-container matColumnDef="folio">
           <th mat-header-cell *matHeaderCellDef> Folio </th>
-          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+          <td mat-cell *matCellDef="let element"> {{element?.folio | mask : 'AAAAAAAA' }} </td>
         </ng-container>
 
-        <ng-container matColumnDef="name">
+        <ng-container matColumnDef="fecha">
           <th mat-header-cell *matHeaderCellDef> Fecha Captura </th>
-          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.fechaCaptura}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="weight">
+        <ng-container matColumnDef="cantidadEntregas">
           <th mat-header-cell *matHeaderCellDef> Cantidad de Capturas </th>
-          <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.cantidadEntregas}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="symbol">
+        <ng-container matColumnDef="cubrioTurno">
           <th mat-header-cell *matHeaderCellDef> Cubrió turno </th>
-          <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.cubrioTurno}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>

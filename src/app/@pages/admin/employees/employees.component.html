@@ -69,7 +69,7 @@
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let employee"> 
           <div fxLayout="row" fxLayoutAlign="end">
-            <button mat-icon-button (click)="onMovimientos()">
+            <button mat-icon-button (click)="onMovimientos(employee)">
               <mat-icon>dehaze</mat-icon>
             </button>
               <button mat-icon-button (click)="editEmployeeById(employee.id)">
