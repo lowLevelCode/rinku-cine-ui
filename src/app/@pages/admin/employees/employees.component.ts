@@ -9,8 +9,10 @@ import { EditCreateDialogData } from 'src/app/interfaces/edit-create-dialog-data
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Employee } from 'src/app/models/employee';
 import { EmployeesService } from 'src/app/services/employees.service';
+import { PopupDialogsService } from 'src/app/services/popup.dialogs.service';
 import { CapturaMovimientosComponent } from 'src/app/shared/components/dialogs/captura-movimientos/captura-movimientos.component';
 import { EditCreateEmployeeComponent } from 'src/app/shared/components/dialogs/edit-create-employee/edit-create-employee.component';
+import { SweetAlertResult } from 'sweetalert2';
 
 @Component({
   selector: 'app-employees',
@@ -28,7 +30,8 @@ export class EmployeesComponent implements OnInit {
   constructor(
     private readonly _employeesService:EmployeesService,
     private readonly _dialog:MatDialog,
-    private readonly _spinner: NgxSpinnerService,) { }
+    private readonly _spinner: NgxSpinnerService,
+    private readonly _popupService:PopupDialogsService) { }
 
   ngOnInit(): void {
 
@@ -76,8 +79,25 @@ export class EmployeesComponent implements OnInit {
     alert("elimina varios empleados");
   }
 
-  deleteEmployeeById(id:number){
-    alert("delete employee "+id);
+  async deleteEmployeeById(employee:Employee) {    
+    const result:SweetAlertResult = 
+    await this._popupService.confirmWarnDelete(`Se eliminará el empleado: ${employee.nombre}`);
+
+    if(result.isConfirmed){
+      this._spinner.show();
+      this._employeesService.deleteEmployeeById(employee.id).pipe(
+        finalize(()=>{ this._spinner.hide(); })
+      ).subscribe(
+        async (result) =>{
+          await this._popupService.topEndSuccess("Empleado Eliminado");
+          this._refreshData();
+        },
+        err => {
+          const {error:{message}} = err
+          this._popupService.topEndError(message);
+        }
+      );
+    }
   }
 
   editEmployeeById(employee:Employee){

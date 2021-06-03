@@ -33,4 +33,16 @@ export class PopupDialogsService {
             timer
           });
     }
+
+    confirmWarnDelete(text:string):Promise<SweetAlertResult<any>> {
+        return Swal.fire({
+            title: '¿Deseas Eliminar Esto?',
+            text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Si, eliminar!'
+          });
+    }
 }

@@ -21,4 +21,8 @@ export class EmployeesService {
     edit(id:number, employee:Partial<Employee>): Observable<Partial<Employee>> {
         return this.httpClient.put<Partial<Employee>>(`${this.url}/employees/${id}`,employee);
     }
+
+    deleteEmployeeById(id: number):Observable<Partial<Employee>>{
+        return this.httpClient.delete<Partial<Employee>>(`${this.url}/employees/${id}`);
+    }
 }
