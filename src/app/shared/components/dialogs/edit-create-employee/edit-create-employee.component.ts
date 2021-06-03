@@ -14,6 +14,7 @@ import { EmployeesService } from 'src/app/services/employees.service';
 import { ResponsiveService } from 'src/app/services/responsive.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { PopupDialogsService } from 'src/app/services/popup.dialogs.service';
+import { DialogEnum } from 'src/app/enums/dialog.enum';
 
 @Component({
   selector: 'app-edit-create-employee',
@@ -103,7 +104,7 @@ export class EditCreateEmployeeComponent {
     ).subscribe(
       async (result) =>{
         await this._popupService.topEndSuccess("Empleado creado con exito");
-        this.dialogRef.close();
+        this.dialogRef.close(DialogEnum.ON_REFRESH_BY_DIALOG); // cerramos el dialog con exito
       },
       error=>{
         const {error:{message}} = error
@@ -122,7 +123,7 @@ export class EditCreateEmployeeComponent {
     ).subscribe(
       async (result) =>{
         await this._popupService.topEndSuccess("Empleado editado con exito");
-        this.dialogRef.close();
+        this.dialogRef.close(DialogEnum.ON_REFRESH_BY_DIALOG);
       },
       error=>{
         const {error:{message}} = error

@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { debounceTime, finalize, map } from 'rxjs/operators';
+import { DialogEnum } from 'src/app/enums/dialog.enum';
 import { EditCreateDialogData } from 'src/app/interfaces/edit-create-dialog-data';
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Employee } from 'src/app/models/employee';
@@ -18,8 +19,7 @@ import { EditCreateEmployeeComponent } from 'src/app/shared/components/dialogs/e
 })
 export class EmployeesComponent implements OnInit {
 
-  filter:FormControl = new FormControl();
-  employees!:Employee[];
+  filter:FormControl = new FormControl();  
   paginationData!:Pagination<Partial<Employee>[]>;
 
   displayedColumns: string[] = ['empleado','rol','tipo', 'actions'];
@@ -51,7 +51,7 @@ export class EmployeesComponent implements OnInit {
     });
   }
 
-  private _freshData() {
+  private _refreshData() {
     this._getAndSetEmployees();
     this.filter.setValue('', { emitEvent:false });
   }
@@ -66,7 +66,10 @@ export class EmployeesComponent implements OnInit {
       }
     });
 
-    dialog.beforeClosed().subscribe(result=>{ this._freshData(); });
+    dialog.beforeClosed().subscribe(result=>{ 
+      if(result === DialogEnum.ON_REFRESH_BY_DIALOG)
+        this._refreshData();
+     });
   }
 
   deleteSelectedEmployees(){
@@ -87,7 +90,11 @@ export class EmployeesComponent implements OnInit {
       }
     });
 
-    dialog.beforeClosed().subscribe(result=>{ this._freshData(); });
+    dialog.beforeClosed().subscribe(result=>{            
+      if(result === DialogEnum.ON_REFRESH_BY_DIALOG){
+        this._refreshData();
+      }
+    });
   }
 
   onMovimientos(employee:Employee){
