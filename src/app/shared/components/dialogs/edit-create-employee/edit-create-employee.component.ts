@@ -15,6 +15,7 @@ import { ResponsiveService } from 'src/app/services/responsive.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { PopupDialogsService } from 'src/app/services/popup.dialogs.service';
 import { DialogEnum } from 'src/app/enums/dialog.enum';
+import { FormUtilService } from 'src/app/services/util/form.util.service';
 
 @Component({
   selector: 'app-edit-create-employee',
@@ -37,7 +38,8 @@ export class EditCreateEmployeeComponent {
     private readonly _employeeTypeService:EmployeeTypeService,
     private readonly _employeesService:EmployeesService,
     private readonly _spinner: NgxSpinnerService,
-    private readonly _popupService:PopupDialogsService) {}
+    private readonly _popupService:PopupDialogsService,
+    private readonly _formUtilService:FormUtilService) {}
 
   ngOnInit():void {    
     const employee = this.userData.employee;
@@ -74,6 +76,8 @@ export class EditCreateEmployeeComponent {
       this._popupService.topEndWarn("El formulario no ha sido modificado");
       return;
     }
+
+    this._formUtilService.cleanForm(this.form); // limpiamos los espacios vacios en un form
 
     const employee:Partial<Employee> = {      
       nombre: this.form.get("firstName")?.value,
