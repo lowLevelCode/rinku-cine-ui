@@ -17,4 +17,8 @@ export class EmployeesService {
     create(employee:Partial<Employee>): Observable<Partial<Employee>> {
         return this.httpClient.post<Partial<Employee>>(`${this.url}/employees`,employee);
     }
+
+    edit(id:number, employee:Partial<Employee>): Observable<Partial<Employee>> {
+        return this.httpClient.put<Partial<Employee>>(`${this.url}/employees/${id}`,employee);
+    }
 }

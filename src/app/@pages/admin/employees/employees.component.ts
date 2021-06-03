@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { debounceTime, map } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { debounceTime, finalize, map } from 'rxjs/operators';
 import { EditCreateDialogData } from 'src/app/interfaces/edit-create-dialog-data';
 import { Pagination } from 'src/app/interfaces/pagination';
 import { Employee } from 'src/app/models/employee';
@@ -26,7 +27,8 @@ export class EmployeesComponent implements OnInit {
 
   constructor(
     private readonly _employeesService:EmployeesService,
-    private readonly _dialog:MatDialog) { }
+    private readonly _dialog:MatDialog,
+    private readonly _spinner: NgxSpinnerService,) { }
 
   ngOnInit(): void {
 
@@ -34,27 +36,37 @@ export class EmployeesComponent implements OnInit {
 
     this.filter.valueChanges
     .pipe(debounceTime(500)) // consulta 500 milisegungos despues de que deja de teclear el usuario
-    .subscribe(data => {
+    .subscribe(data => {      
       this._getAndSetEmployees(data);
     });
   }
 
   private _getAndSetEmployees(keyword:string = ""){
-    this._employeesService.getEmployees().subscribe((pagination:Pagination<Partial<Employee>[]>) => {
+    this._spinner.show();
+    this._employeesService.getEmployees().pipe(
+      finalize(()=>{ this._spinner.hide(); })
+    ).subscribe((pagination:Pagination<Partial<Employee>[]>) => {
       const employees = pagination.items;      
       this.data = new MatTableDataSource(employees);      
     });
   }
 
+  private _freshData() {
+    this._getAndSetEmployees();
+    this.filter.setValue('', { emitEvent:false });
+  }
+
 
   addNewEmployee() {
-    this._dialog.open(EditCreateEmployeeComponent,{
+    const dialog = this._dialog.open(EditCreateEmployeeComponent,{
       width:"55%",
       height:"95%",
       data:<EditCreateDialogData>{
         title:"Nuevo Empleado"
       }
     });
+
+    dialog.beforeClosed().subscribe(result=>{ this._freshData(); });
   }
 
   deleteSelectedEmployees(){
@@ -65,8 +77,17 @@ export class EmployeesComponent implements OnInit {
     alert("delete employee "+id);
   }
 
-  editEmployeeById(id:number){
-    alert("edit employee "+id);
+  editEmployeeById(employee:Employee){
+    const dialog = this._dialog.open(EditCreateEmployeeComponent,{
+      width:"55%",
+      height:"95%",
+      data:<EditCreateDialogData>{
+        title:"Editar Empleado",
+        employee
+      }
+    });
+
+    dialog.beforeClosed().subscribe(result=>{ this._freshData(); });
   }
 
   onMovimientos(employee:Employee){

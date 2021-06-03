@@ -16,6 +16,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { EditCreateEmployeeModule } from 'src/app/shared/components/dialogs/edit-create-employee/edit-create-employee.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { CapturaMovimientosModule } from 'src/app/shared/components/dialogs/captura-movimientos/captura-movimientos.module';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { CapturaMovimientosModule } from 'src/app/shared/components/dialogs/capt
     MatIconModule,
     EditCreateEmployeeModule,
     MatChipsModule,
-    CapturaMovimientosModule
+    CapturaMovimientosModule,
+    NgxSpinnerModule
   ],
   providers:[EmployeesService]
 })
