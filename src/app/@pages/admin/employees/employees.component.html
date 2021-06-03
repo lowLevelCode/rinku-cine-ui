@@ -5,11 +5,7 @@
         <input matInput [formControl]="filter">
         <mat-icon matPrefix>search</mat-icon>
       </mat-form-field>
-    <div fxLayoutGap="10px">
-        <button mat-raised-button color="warn" (click)="deleteSelectedEmployees()">
-            <mat-icon>person_remove</mat-icon>
-            Eliminar
-        </button>
+    <div fxLayoutGap="10px">        
         <button mat-raised-button color="accent" (click)="addNewEmployee()">
             <mat-icon>person_add_alt</mat-icon>
             Agregar Nuevo empleado

@@ -75,10 +75,6 @@ export class EmployeesComponent implements OnInit {
      });
   }
 
-  deleteSelectedEmployees(){
-    alert("elimina varios empleados");
-  }
-
   async deleteEmployeeById(employee:Employee) {    
     const result:SweetAlertResult = 
     await this._popupService.confirmWarnDelete(`Se eliminará el empleado: ${employee.nombre}`);
