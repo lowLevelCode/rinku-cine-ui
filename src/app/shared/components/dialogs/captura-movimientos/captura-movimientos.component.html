@@ -72,7 +72,8 @@
 
     </div>
 
-    <span class="primary-text" *ngIf="hayMovimientos">Ultimos Movimientos</span>
+    <span class="primary-text" *ngIf="hayMovimientos">Movimientos de el mes: </span>
+    <span>{{mesSelected}}</span>
     <div class="movimientos-table" fxLayout="column">
 
       <div fxLayout="column" fxLayoutAlign="center center" *ngIf="!hayMovimientos">
@@ -130,3 +131,20 @@
     </div>    
   </form>
 </div>
+
+<mat-dialog-actions *ngIf="hayMovimientos">
+  <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px" fxFlex>
+    <mat-form-field appearance="outline">
+      <mat-label>Mes</mat-label>
+      <mat-select [formControl]="mesControl">
+          <mat-option *ngFor="let mes of meses" [value]="mes.number" >
+              {{mes.text}}
+          </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="onCalcularSalario()">
+      <mat-icon >attach_money</mat-icon>
+      Calcular Salario
+    </button>
+  </div>
+</mat-dialog-actions>

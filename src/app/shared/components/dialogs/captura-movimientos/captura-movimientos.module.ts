@@ -25,6 +25,7 @@ import { BitacoraEntregasService } from 'src/app/services/bitacora-entregas.serv
 import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { DatePickerFormatModule } from 'src/app/shared/directives/date-picker-format/date-picker-format.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgxMaskModule,
     MatAutocompleteModule,
     DatePickerFormatModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    MatTabsModule
   ],
   exports: [CapturaMovimientosComponent],
   providers:[

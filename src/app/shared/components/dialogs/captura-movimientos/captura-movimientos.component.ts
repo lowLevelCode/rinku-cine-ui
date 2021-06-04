@@ -16,15 +16,36 @@ import { EmployeeRolService } from 'src/app/services/employee-rol.service';
 import { EmployeeTypeService } from 'src/app/services/employee-type.service';
 import { PopupDialogsService } from 'src/app/services/popup.dialogs.service';
 import { SweetAlertResult } from 'sweetalert2';
+import * as moment from 'moment';
 
+export interface Month {
+  number:number;
+  text:string;
+}
 @Component({
   selector: 'app-captura-movimientos',
   templateUrl: './captura-movimientos.component.html',
   styleUrls: ['./captura-movimientos.component.scss']
 })
-export class CapturaMovimientosComponent implements OnInit {
+export class CapturaMovimientosComponent implements OnInit {  
   displayedColumns: string[] = ['folio','fecha','cantidadEntregas','rol','tipo','cubrioTurno','actions'];
   dataSource!:MatTableDataSource<any>;
+  meses:Month[]= [
+    {number:0, text:"Enero"},
+    {number:1, text:"Febrero"},
+    {number:2, text:"Marzo"},
+    {number:3, text:"Abril"},
+    {number:4, text:"Mayo"},
+    {number:5, text:"Junio"},
+    {number:6, text:"Julio"},
+    {number:7, text:"Agosto"},
+    {number:8, text:"Septiembre"},
+    {number:9, text:"Octubre"},
+    {number:10, text:"Noviembre"},
+    {number:11, text:"Diciembre"},
+  ];
+
+  mesControl:FormControl = new FormControl();
 
   employeesRol$!:Observable<EmployeeRol[]>;
   employeesType$!:Observable<EmployeeType[]>;
@@ -35,7 +56,8 @@ export class CapturaMovimientosComponent implements OnInit {
   isAuxiliar!:boolean;
   rowSelected:any;
   onModificarMovimiento!:boolean;
-  
+  mesSelected!:string;
+
   constructor(
     public dialogRef: MatDialogRef<CapturaMovimientosComponent>,
     private readonly _fb:FormBuilder,
@@ -63,6 +85,12 @@ export class CapturaMovimientosComponent implements OnInit {
 
     this.isAuxiliar = this.employee.employeeRol.id === EmployeeRolEnum.AUXILIAR;
 
+    this.mesControl.valueChanges.subscribe(data=>{      
+      const mes = this.meses.find(m=>m.number == data);
+      this.mesSelected = mes?.text || '';
+    });
+
+    this.mesControl.setValue(moment().month());
   }
 
   private _getLastMovimientos(){
@@ -89,6 +117,10 @@ export class CapturaMovimientosComponent implements OnInit {
     this._cleanInputs();
     this.rowSelected = null;
     this.onModificarMovimiento = false;
+  }
+
+  onCalcularSalario() {
+    
   }
 
   onSubmit() {

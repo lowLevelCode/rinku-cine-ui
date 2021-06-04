@@ -24,7 +24,7 @@ export class EmployeesComponent implements OnInit {
   filter:FormControl = new FormControl();  
   paginationData!:Pagination<Partial<Employee>[]>;
 
-  displayedColumns: string[] = ['empleado','rol','tipo', 'actions'];
+  displayedColumns: string[] = ['empleado','rol','tipo', 'captura-sueldo', 'actions'];
   data!:MatTableDataSource<any>;
 
   constructor(

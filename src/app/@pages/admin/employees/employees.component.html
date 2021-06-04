@@ -23,8 +23,7 @@
             <span class="primary-text">{{employee.nombre}}</span>
             <span class="secondary-text">{{employee.apellidos}}</span>
           </div>
-        </div>
-        <!-- {{employee.nombre}}  -->
+        </div>        
       </td>
     </ng-container>
 
@@ -61,17 +60,27 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="captura-sueldo">
+      <th mat-header-cell *matHeaderCellDef> Pagos y movimientos </th>
+      <td mat-cell *matCellDef="let employee"> 
+        <mat-chip-list>
+          <mat-chip fxLayoutGap="10px" (click)="onMovimientos(employee)">
+            <mat-icon>attach_money</mat-icon>            
+            <span>Pagos y movimientos</span>
+          </mat-chip>          
+        </mat-chip-list>
+      </td>
+    </ng-container>
+
+
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let employee"> 
-          <div fxLayout="row" fxLayoutAlign="end">
-            <button mat-icon-button (click)="onMovimientos(employee)">
-              <mat-icon>dehaze</mat-icon>
-            </button>
+          <div fxLayout="row" fxLayoutAlign="end">            
               <button mat-icon-button (click)="editEmployeeById(employee)">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button mat-icon-button (click)="deleteEmployeeById(employee)">
+              <button mat-icon-button color="warn" (click)="deleteEmployeeById(employee)">
                 <mat-icon>delete</mat-icon>
               </button>
           </div>
