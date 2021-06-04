@@ -40,8 +40,8 @@ export class PopupDialogsService {
             text,
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#3F51B5',
+            cancelButtonColor: '#F44336',
             confirmButtonText: '¡Si, eliminar!'
           });
     }

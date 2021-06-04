@@ -30,4 +30,8 @@ export class BitacoraEntregasService {
     updateMovimiento(id:number, updateBitacora:updateBitacoraEntregas) :Observable<BitacoraEntregas> {
         return this.httpClient.patch<BitacoraEntregas>(`${this.url}/bitacora-entregas/${id}`,updateBitacora);
     }
+
+    deleteMovimiento(id:number): Observable<any> {
+        return this.httpClient.delete<any>(`${this.url}/bitacora-entregas/${id}`);
+    }
 }

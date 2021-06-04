@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Observable } from 'rxjs';
@@ -14,8 +14,8 @@ import { EmployeeType } from 'src/app/models/employee-type';
 import { BitacoraEntregasService } from 'src/app/services/bitacora-entregas.service';
 import { EmployeeRolService } from 'src/app/services/employee-rol.service';
 import { EmployeeTypeService } from 'src/app/services/employee-type.service';
-import { EmployeesService } from 'src/app/services/employees.service';
 import { PopupDialogsService } from 'src/app/services/popup.dialogs.service';
+import { SweetAlertResult } from 'sweetalert2';
 
 @Component({
   selector: 'app-captura-movimientos',
@@ -23,7 +23,7 @@ import { PopupDialogsService } from 'src/app/services/popup.dialogs.service';
   styleUrls: ['./captura-movimientos.component.scss']
 })
 export class CapturaMovimientosComponent implements OnInit {
-  displayedColumns: string[] = ['folio','fecha','cantidadEntregas','rol','tipo','cubrioTurno'];
+  displayedColumns: string[] = ['folio','fecha','cantidadEntregas','rol','tipo','cubrioTurno','actions'];
   dataSource!:MatTableDataSource<any>;
 
   employeesRol$!:Observable<EmployeeRol[]>;
@@ -37,16 +37,17 @@ export class CapturaMovimientosComponent implements OnInit {
   onModificarMovimiento!:boolean;
   
   constructor(
+    public dialogRef: MatDialogRef<CapturaMovimientosComponent>,
     private readonly _fb:FormBuilder,
     @Inject(MAT_DIALOG_DATA) public employee: Employee,
     private readonly _employeeRolService:EmployeeRolService,
-    private readonly _employeeTypeService:EmployeeTypeService,
-    private readonly _employee:EmployeesService,
+    private readonly _employeeTypeService:EmployeeTypeService,    
     private readonly _bitacoraEntregasService:BitacoraEntregasService,
     private readonly _spinner: NgxSpinnerService,
     private readonly _popupService:PopupDialogsService,) {}
 
   ngOnInit(): void {
+    this.dialogRef.disableClose= true;
     this.employeesRol$ = this._employeeRolService.getAllRols().pipe(map(result => result));
     this.employeesType$ = this._employeeTypeService.getAllTypes().pipe(map(result => result));     
 
@@ -58,14 +59,7 @@ export class CapturaMovimientosComponent implements OnInit {
       cubrioTurno:[''],
     });    
 
-    this._getLastMovimientos();
-
-    // this._bitacoraEntregasService.getBitacoraByEmployeeIdAndDateRange(id)
-    // .subscribe((bitacora:BitacoraEntregas[]) => {
-    //   this.hayMovimientos = bitacora.length > 0;  
-    //   this.dataSource = new MatTableDataSource(bitacora);      
-    // });
-
+    this._getLastMovimientos();    
 
     this.isAuxiliar = this.employee.employeeRol.id === EmployeeRolEnum.AUXILIAR;
 
@@ -117,8 +111,6 @@ export class CapturaMovimientosComponent implements OnInit {
       cantidadEntregas : this.form.get("cantidadEntregas")?.value,
       fechaCaptura : this.form.get("fechaMovimiento")?.value,
     };
-
-    
     
     if(this.onModificarMovimiento ){
       const id = this.rowSelected.id;
@@ -132,6 +124,24 @@ export class CapturaMovimientosComponent implements OnInit {
       this._createMovimento(movimiento);
     }
 
+  }
+
+  async onDeleteMovimiento(id:number){
+    const result:SweetAlertResult = await this._popupService.confirmWarnDelete("Este movimiento de eliminará de manera definitiva");
+    if(result.isConfirmed) {
+      this._bitacoraEntregasService.deleteMovimiento(id)
+      .pipe(finalize(()=>{ this._spinner.hide(); }))
+      .subscribe(
+        async (result) => {
+          await this._popupService.topEndSuccess("Movimiento Eliminado definitivamente");
+          this._refreshDataTable();
+        },
+        err=>{
+          const {error:{message}} = err;
+          this._popupService.topEndError(message);        
+        }
+      );
+    }
   }
 
   private _createMovimento(movimiento:Partial<BitacoraEntregas>){
