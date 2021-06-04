@@ -1,7 +1,14 @@
 export interface BitacoraEntregas {
     id:number;
     folio:string;
-    fechaCaptura:string;
+    idEmployee:number;
+    fechaCaptura:Date;
     cantidadEntregas:number;
-    cubrioTurno:boolean;
+    rolId:number;
+    tipoId:number;
+    cubrioTurnoTo:string;
+}
+
+export interface updateBitacoraEntregas {
+    cantidadEntregas:number;
 }

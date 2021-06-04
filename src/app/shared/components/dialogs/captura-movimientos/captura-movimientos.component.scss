@@ -22,3 +22,7 @@ app-avatar{
         }
     }
 }
+
+.mat-row:hover .mat-cell {
+    background-color: #ccc;
+}
